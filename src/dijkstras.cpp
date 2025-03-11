@@ -9,7 +9,8 @@ using namespace std;
 
 
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous) {
-
+    int n = G.size();
+    G.resize(n, INF);
 }
 
 vector<int> extract_shortest_path(const vector<int>& /*distances*/, const vector<int>& previous, int destination) {

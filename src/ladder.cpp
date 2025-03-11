@@ -8,7 +8,7 @@
 using namespace std;
 
 void error(string word1, string word2, string msg) {
-
+    cout << word1 << " " << word2 << " ERROR: " << msg << endl;
 }
 
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d)  {
