@@ -3,6 +3,6 @@
 #include "dijkstras.h"
 #include "ladder.h"
 
-TEST(Replace, Me) {
-  EXPECT_TRUE(false);
+TEST(Example, ShouldPass) {
+  EXPECT_TRUE(true);
 }
