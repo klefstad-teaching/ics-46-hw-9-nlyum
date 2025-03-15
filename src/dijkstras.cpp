@@ -7,6 +7,11 @@
 #include "dijkstras.h"
 using namespace std;
 
+struct compare_weights {
+    bool operator()(const pair<int, int>& left, const pair<int, int>& right) {
+        return left.weight > right.weight;
+    }
+}
 
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous) {
     int numVertices = G.size();
@@ -14,10 +19,11 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
     vector<bool> visited(numVertices, false);
     distances[source] = 0;
     previous[source] = UNDEFINED;
-    priority_queue<pair<int, int>> minHeap;     // pair: vertex, weight
+    priority_queue<pair<int, int>, vector<pair<int, int>>, compare_weights> minHeap;
     minHeap.push({source, 0});
     while (!minHeap.empty()) {
-        int u = minHeap.extractVertexWithMinimumWeight().first();
+        int u = minHeap.top().first();
+        minHeap.pop();
         if (visited[u])     // skip if we've already visited it
             continue;
         visited[u] = true;  // mark that we're visiting this so we don't visit later

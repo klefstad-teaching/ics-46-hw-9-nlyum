@@ -47,6 +47,8 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
             pattern += word.substr(i + 1);
             patterns[word].push_back(pattern);      // push pattern for each character removal
         }
+
+        
     }
 
 }
