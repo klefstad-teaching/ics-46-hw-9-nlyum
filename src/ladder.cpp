@@ -20,6 +20,34 @@ bool is_adjacent(const string& word1, const string& word2) {
 }
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
+    word_list.insert(begin_word);
+    map<string, vector<string>> patterns;
+    
+    for (string word : word_list) {
+        int word_length = word.length();
+        for (int i = 0; i < word_length; ++i) {     // iterate through characters
+            string pattern;
+            pattern += word.substr(0, i);
+            pattern += "*";
+            pattern += word.substr(i + 1);
+            patterns[word].push_back(pattern);      // push pattern for each character change
+        }
+
+        for (int i = 0; i <= word_length; ++i) {
+            string pattern;
+            pattern += word.substr(0, i);
+            pattern += "*";
+            pattern += word.substr(i);
+            patterns[word].push_back(pattern);      // push pattern for each character addition
+        }
+
+        for (int i = 0; i < word_length; ++i) {
+            string pattern;
+            pattern += word.substr(0, i);
+            pattern += word.substr(i + 1);
+            patterns[word].push_back(pattern);      // push pattern for each character removal
+        }
+    }
 
 }
 
