@@ -1,3 +1,7 @@
+#include "ladder.h"
+#include <iostream>
+using namespace std;
+
 int main() {
-    return 0;
+    verify_word_ladder();
 }
