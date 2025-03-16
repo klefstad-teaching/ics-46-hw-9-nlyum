@@ -40,6 +40,21 @@ int edit_distance(const string& str1, const string& str2) {
         return str2_len;
     if (str2_len == 0)
         return str1_len;
+
+    int arr[str1_len + 1][str2_len + 1];
+
+    for (int i = 0; i <= str1_len; ++i)
+        arr[i][0] = i;
+    for (int i = 0; i <= str2_len; ++i)
+        arr[0][i] = i;
+
+    for (int i = 1; i <= str1_len; ++i) {
+        for (int j = 1; j <= str2_len; ++j) {
+            arr[i][j] = min{arr[i-1][j-1], arr[i-1][j], arr[i][j-1]};
+        }
+    }
+
+    return arr[str1_len][str2_len];
 }
 
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d)  {
@@ -48,6 +63,8 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 
 bool is_adjacent(const string& word1, const string& word2) {
     // cout << "comparing " << word1 << " and " << word2 << ", ";
+    return edit_distance_within(word1, word2, 1);
+    
     int word1_len = word1.length();
     int word2_len = word2.length();
     if (word1_len < word2_len - 1)
