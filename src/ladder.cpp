@@ -11,26 +11,6 @@ void error(string word1, string word2, string msg) {
     cout << word1 << " " << word2 << " ERROR: " << msg << endl;
 }
 
-vector<string> get_patterns(const string& word) {
-    vector<string> patterns;
-    int word_length = word.length();
-    for (int i = 0; i < word_length; ++i) {     // iterate through characters
-        string pattern = word.substr(0, i) + "*" + word.substr(i + 1);
-        patterns.push_back(pattern);      // push pattern for each character change
-
-        pattern = word.substr(0, i) + "*" + word.substr(i);
-        patterns.push_back(pattern);      // push pattern for each character addition
-        
-        pattern = word.substr(0, i) + word.substr(i + 1);
-        patterns.push_back(pattern);      // push pattern for each character removal
-    }
-    
-    string pattern = word + "*";
-    patterns.push_back(pattern);      // push pattern for character added at end
-
-    return patterns;
-}
-
 int edit_distance(const string& str1, const string& str2) {
     int str1_len = str1.length();
     int str2_len = str2.length();
@@ -65,28 +45,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 }
 
 bool is_adjacent(const string& word1, const string& word2) {
-    // cout << "comparing " << word1 << " and " << word2 << ", ";
     return edit_distance_within(word1, word2, 1);
-
-    int word1_len = word1.length();
-    int word2_len = word2.length();
-    if (word1_len < word2_len - 1)
-        return false;
-    if (word1_len > word2_len + 1)
-        return false;
-    
-    vector<string> word1_patterns = get_patterns(word1);
-    vector<string> word2_patterns = get_patterns(word2);
-    for (string pattern1 : word1_patterns) {
-        for (string pattern2 : word2_patterns) {
-            if (pattern1 == pattern2) {
-                return true;
-            }
-                
-        }
-    }
-    return false;
-
 }
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
