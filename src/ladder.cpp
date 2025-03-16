@@ -12,18 +12,6 @@ void error(string word1, string word2, string msg) {
     cout << word1 << " " << word2 << " ERROR: " << msg << endl;
 }
 
-vector<string> get_patterns(const string& word) {
-    vector<string> patterns;
-    int word_length = word.length();
-    for (int i = 0; i < word_length; ++i) {     // iterate through characters
-        patterns.push_back(word.substr(0, i) + "*" + word.substr(i + 1));      // push pattern for each character change
-        patterns.push_back(word.substr(0, i) + "*" + word.substr(i));      // push pattern for each character addition
-        patterns.push_back(word.substr(0, i) + word.substr(i + 1));      // push pattern for each character removal
-    }
-    patterns.push_back(word + "*");
-    return patterns;
-}
-
 int edit_distance(const string& str1, const string& str2) {
     int str1_len = str1.length();
     int str2_len = str2.length();
@@ -70,8 +58,6 @@ bool is_adjacent(const string& word1, const string& word2) {
 }
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
-    // return {};
-    // put begin_word in word set if not already in
     set<string> word_set = word_list;
     word_set.insert(begin_word);
     
@@ -101,7 +87,6 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         for (string word : word_set) {
             
             if (ladder.size() >= previous_words[word]) {
-                // cout << "optimal " << word << " is " << previous_words[word];
                 continue;
             }
             
@@ -120,10 +105,6 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
                     ladder_queue.push(new_ladder);
                     
-                    
-                    // cout << "pushed ladder ";
-                    // print_word_ladder(new_ladder);
-                    // cout << " / ";
                 }
             }
         }
@@ -135,10 +116,8 @@ void load_words(set<string> & word_list, const string& file_name) {
     ifstream in(file_name);
     string word;
     while (in >> word) {
-        // cout << "inserting " << word << ", ";
         word_list.insert(word);
     }
-    // cout << "done loading" << endl;
     in.close();
 }
 
@@ -161,10 +140,6 @@ void verify_word_ladder() {
     load_words(word_list, "src/words.txt");
 
     print_word_ladder(generate_word_ladder("cat", "dog", word_list));
-
-    // cout << generate_word_ladder("marty", "curls", word_list).size() << endl;
-
-    // cout << generate_word_ladder("code", "data", word_list).size() << endl;
 }
 
 
