@@ -12,6 +12,18 @@ void error(string word1, string word2, string msg) {
     cout << word1 << " " << word2 << " ERROR: " << msg << endl;
 }
 
+vector<string> get_patterns(const string& word) {
+     vector<string> patterns;
+     int word_length = word.length();
+     for (int i = 0; i < word_length; ++i) {     // iterate through characters
+         patterns.push_back(word.substr(0, i) + "*" + word.substr(i + 1));      // push pattern for each character change
+         patterns.push_back(word.substr(0, i) + "*" + word.substr(i));      // push pattern for each character addition
+         patterns.push_back(word.substr(0, i) + word.substr(i + 1));      // push pattern for each character removal
+     }
+     patterns.push_back(word + "*");
+     return patterns;
+ }
+
 int edit_distance(const string& str1, const string& str2) {
     int str1_len = str1.length();
     int str2_len = str2.length();
@@ -74,23 +86,38 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     set<string> visited;
     visited.insert(begin_word);
     map<string, int> previous_words;
-    for (string word : word_set)
+
+    map<string, vector<string>> patterns; // maps a word to all its patterns
+    map<string, vector<string>> neighbors; // maps a pattern to all its fitting words
+
+    for (string word : word_set) {
         previous_words[word] = INF;
+
+        vector<string> word_patterns;
+        int word_length = word.length();
+        for (int i = 0; i < word_length; ++i) {     // iterate through characters
+            word_patterns.push_back(word.substr(0, i) + "*" + word.substr(i + 1));      // push pattern for each character change
+            word_patterns.push_back(word.substr(0, i) + "*" + word.substr(i));      // push pattern for each character addition
+            word_patterns.push_back(word.substr(0, i) + word.substr(i + 1));      // push pattern for each character removal
+        }
+        word_patterns.push_back(word + "*");
+
+        patterns[word] = word_patterns;
+        for (string pattern : word_patterns) {
+            neighbors[pattern].push_back(word);
+        }
+    }
+
     
     while (!ladder_queue.empty()) {
         vector<string> ladder = ladder_queue.front();
         ladder_queue.pop();
         int ladder_size = ladder_queue.size();
-
         string last_word = ladder.back();
 
-        for (string word : word_set) {
-            /*
-            if (ladder.size() >= previous_words[word]) {
-                continue;
-            }
-            */
-            if (is_adjacent(last_word, word)) {
+
+        for (string pattern : patterns[last_word]) {
+            for (string word : neighbors[pattern]) {
                 if (visited.count(word) == 0) {
                     visited.insert(word);
                     vector<string> new_ladder = ladder;
@@ -99,9 +126,10 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
                         return new_ladder;
                     
                     previous_words[new_ladder.back()] = ladder.size();
+                    if (ladder.size() > ladder_size)
+                        word_set.erase(new_ladder.back());
 
                     ladder_queue.push(new_ladder);
-                    
                 }
             }
         }

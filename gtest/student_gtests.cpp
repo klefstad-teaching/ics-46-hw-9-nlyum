@@ -7,17 +7,6 @@ TEST(Example, ShouldPass) {
   EXPECT_TRUE(true);
 }
 
-TEST(Dijkstras, SmallFile) {
-  Graph G;
-  file_to_graph("src/small.txt", G);
-  vector<int> previous;
-  for (int i : dijkstra_shortest_path(G, 0, previous)) {
-    cout << i << endl;
-  }
-
-}
-
-/*
 TEST(EditDistance, CatToDog) {
   EXPECT_TRUE(edit_distance_within("cat", "dog", 3));
   EXPECT_TRUE(!edit_distance_within("cat", "dog", 2));
@@ -37,4 +26,3 @@ TEST(WordLadder, ShrinkString) {
   set<string> word_list = {"cat", "c", "ca"};
   EXPECT_TRUE(generate_word_ladder("cat", "c", word_list).size() == 3);
 }
-*/
