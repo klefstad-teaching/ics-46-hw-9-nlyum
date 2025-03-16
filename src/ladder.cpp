@@ -70,7 +70,7 @@ bool is_adjacent(const string& word1, const string& word2) {
 }
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
-    return {};
+    // return {};
     // put begin_word in word set if not already in
     set<string> word_set = word_list;
     word_set.insert(begin_word);
