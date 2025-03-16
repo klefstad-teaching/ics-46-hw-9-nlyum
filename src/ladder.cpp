@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "ladder.h"
 using namespace std;
+constexpr int INF = numeric_limits<int>::max();
 
 void error(string word1, string word2, string msg) {
     cout << word1 << " " << word2 << " ERROR: " << msg << endl;
@@ -65,7 +66,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     begin_word_vector.push_back(begin_word);
     
     if (begin_word == end_word) {
-        return begin_word_vector;
+        return {};
     }
     
     queue<vector<string>> ladder_queue;
@@ -74,20 +75,27 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     set<string> visited;
     visited.insert(begin_word);
     map<string, int> previous_words;
+    for (string word : word_set)
+        previous_words[word] = INF;
 
+    
+    
+    
     while (!ladder_queue.empty()) {
         vector<string> ladder = ladder_queue.front();
         ladder_queue.pop();
+        int ladder_size = ladder_queue.size();
 
         string last_word = ladder.back();
 
         for (string word : word_set) {
             /*
-            if (previous_words.find(word) != previous_words.end() && ladder.size() >= previous_words[word]) {
-                // cout << "optimal " << word << " is " << previous_words[word];
+            if (ladder.size() >= previous_words[word]) {
+                cout << "optimal " << word << " is " << previous_words[word];
                 continue;
             }
             */
+            
             
             if (is_adjacent(last_word, word)) {
                 if (visited.count(word) == 0) {
@@ -98,6 +106,8 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
                         return new_ladder;
                     
                     previous_words[new_ladder.back()] = ladder.size();
+                    if (ladder.size() > ladder_size)
+                        word_set.erase(new_ladder.back());
 
                     ladder_queue.push(new_ladder);
                     
