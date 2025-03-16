@@ -97,13 +97,13 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
         string last_word = ladder.back();
 
-        for (string word : neighbors[last_word]) {
-            /*
+        for (string word : word_set) {
+            
             if (ladder.size() >= previous_words[word]) {
-                cout << "optimal " << word << " is " << previous_words[word];
+                // cout << "optimal " << word << " is " << previous_words[word];
                 continue;
             }
-            */
+            
             
             if (is_adjacent(last_word, word)) {
                 if (visited.count(word) == 0) {
@@ -120,9 +120,9 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
                     ladder_queue.push(new_ladder);
                     
                     
-                    // cout << "pushed new ladder ";
+                    // cout << "pushed ladder ";
                     // print_word_ladder(new_ladder);
-                    // cout << ", ";
+                    // cout << " / ";
                 }
             }
         }
@@ -146,7 +146,7 @@ void print_word_ladder(const vector<string>& ladder) {
         cout << "No word ladder found." << endl;
         return;
     }
-    
+    cout << "Word ladder found: ";
     for (string word: ladder)
         cout << word << " ";
     cout << endl;
