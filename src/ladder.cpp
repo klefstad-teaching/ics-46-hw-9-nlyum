@@ -36,6 +36,7 @@ vector<string> get_patterns(const string& word) {
         pattern += word.substr(i + 1);
         patterns.push_back(pattern);      // push pattern for each character removal
     }
+    return patterns;
 }
 
 
