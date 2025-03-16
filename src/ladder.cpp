@@ -89,32 +89,6 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     map<string, int> previous_words;
     for (string word : word_set)
         previous_words[word] = INF;
-
-
-    map<string, vector<string>> patterns;       // maps word to patterns that fit
-    map<string, set<string>> related_words;     // maps pattern to words that fit
-    map<string, set<string>> neighbors;         // maps word to neighbors that are one away
-    for (string word : word_set) {
-        vector<string> word_patterns = get_patterns(word);
-        patterns[word] = word_patterns;
-        for (string pattern : word_patterns) {
-            related_words[pattern].insert(word);
-        }
-    }
-
-    for (string word : word_set) {
-        vector<string> word_patterns = get_patterns(word);
-        for (string pattern : word_patterns) {
-            for (string related_word : related_words[pattern]) {
-                neighbors[word].insert(related_word);
-            }
-        }
-
-    }
-
-    
-    
-    cout << "past new phase" << endl;
     
     while (!ladder_queue.empty()) {
         vector<string> ladder = ladder_queue.front();
@@ -131,7 +105,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
             }
             */
             
-            if (true) {
+            if (is_adjacent(last_word, word)) {
                 if (visited.count(word) == 0) {
                     visited.insert(word);
                     vector<string> new_ladder = ladder;
