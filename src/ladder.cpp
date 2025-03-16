@@ -21,7 +21,8 @@ int edit_distance(const string& str1, const string& str2) {
     if (str2_len == 0)
         return str1_len;
 
-    int arr[str1_len + 1][str2_len + 1];
+    vector<vector<int>> arr;
+    arr.resize(str1_len + 1, vector<int>(str2_len + 1, 0));
 
     for (int i = 0; i <= str1_len; ++i)
         arr[i][0] = i;
