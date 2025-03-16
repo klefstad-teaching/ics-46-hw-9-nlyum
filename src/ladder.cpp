@@ -44,6 +44,15 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 }
 
 bool is_adjacent(const string& word1, const string& word2) {
+    vector<string> word1_patterns = get_patterns(word1);
+    vector<string> word2_patterns = get_patterns(word2);
+    for (string pattern1 : word1_patterns) {
+        for (string pattern2 : word2 patterns) {
+            if (pattern1 == pattern2)
+                return true;
+        }
+    }
+    return false;
 
 }
 
