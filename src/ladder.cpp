@@ -45,12 +45,22 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 }
 
 bool is_adjacent(const string& word1, const string& word2) {
+    // cout << "comparing " << word1 << " and " << word2 << ", ";
+    int word1_len = word1.length();
+    int word2_len = word2.length();
+    if (word1_len < word2_len - 1)
+        return false;
+    if (word1_len > word2_len + 1)
+        return false;
+    
     vector<string> word1_patterns = get_patterns(word1);
     vector<string> word2_patterns = get_patterns(word2);
     for (string pattern1 : word1_patterns) {
         for (string pattern2 : word2_patterns) {
-            if (pattern1 == pattern2)
+            if (pattern1 == pattern2) {
                 return true;
+            }
+                
         }
     }
     return false;
@@ -74,6 +84,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
     set<string> visited;
     visited.insert(begin_word);
+    map<string, int> previous_words;
 
     while (!ladder_queue.empty()) {
         vector<string> ladder = ladder_queue.front();
@@ -87,9 +98,16 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
                     visited.insert(word);
                     vector<string> new_ladder = ladder;
                     new_ladder.push_back(word);
+
+
+
+
                     if (word == end_word)
                         return new_ladder;
                     ladder_queue.push(new_ladder);
+                    cout << "pushed new ladder ";
+                    print_word_ladder(new_ladder);
+                    cout << ", ";
                 }
             }
         }
@@ -97,51 +115,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     return {};
 
     
-    // an old solution that i spent 3 hours on but ended up scrapping :(
-    /*
-    set<string> word_set = word_list;
-    word_set.insert(begin_word);
-    map<string, vector<string>> patterns;
-    map<string, vector<string>> neighbors;
     
-    for (string word : word_set) {     // create maps
-        vector<string> word_patterns = get_patterns(word);
-        patterns[word] = word_patterns;
-        for (string pattern : word_patterns) {
-            neighbors[pattern].push_back(word);
-        }
-    }
-    
-    vector<string> ladder;
-
-    set<string> visited;    // already visited
-    visited.insert(begin_word);
-    
-    queue<string> q;        // what to visit next
-    q.push(begin_word);
-    
-    while (!q.empty()) {
-        string word = q.front();
-        q.pop();
-        ladder.push_back(word);
-        
-        if (word == end_word) {
-            return ladder;
-        }
-            
-
-        for (string pattern : patterns[word]) {
-            // cout << "searching pattern: " << pattern << ", ";
-            for (string neighbor : neighbors[pattern]) {
-                if (visited.count(neighbor) == 0) {     // haven't visited
-                    visited.insert(neighbor);
-                    q.push(neighbor);
-                }
-            }
-        }
-    }
-    return ladder;
-    */
 }
 
 void load_words(set<string> & word_list, const string& file_name) {
@@ -167,7 +141,7 @@ void verify_word_ladder() {
     set<string> word_list;
     load_words(word_list, "src/words.txt");
 
-    print_word_ladder(generate_word_ladder("cat", "dog", word_list));
+    print_word_ladder(generate_word_ladder("cat", "Nan", word_list));
 
     // cout << generate_word_ladder("marty", "curls", word_list).size() << endl;
 
