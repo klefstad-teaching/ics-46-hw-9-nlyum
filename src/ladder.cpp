@@ -101,7 +101,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
             word_patterns.push_back(word.substr(0, i) + word.substr(i + 1));      // push pattern for each character removal
         }
         word_patterns.push_back(word + "*");
-
+        reverse(word_patterns.begin(), word_patterns.end());
         patterns[word] = word_patterns;
         for (string pattern : word_patterns) {
             neighbors[pattern].push_back(word);
