@@ -90,7 +90,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
             
 
         for (string pattern : patterns[word]) {
-            cout << "searching pattern: " << pattern << ", ";
+            // cout << "searching pattern: " << pattern << ", ";
             for (string neighbor : neighbors[pattern]) {
                 if (visited.count(neighbor) == 0) {     // haven't visited
                     visited.insert(neighbor);
@@ -106,10 +106,10 @@ void load_words(set<string> & word_list, const string& file_name) {
     ifstream in(file_name);
     string word;
     while (in >> word) {
-        // cout << "inserting " << word << ", ";
+        cout << "inserting " << word << ", ";
         word_list.insert(word);
     }
-        
+    cout << "done loading" << endl;
     in.close();
 }
 
@@ -123,7 +123,8 @@ void print_word_ladder(const vector<string>& ladder) {
 
 void verify_word_ladder() {
     set<string> word_list;
-    load_words(word_list, "src/words.txt");
+    // load_words(word_list, "src/words.txt");
+    word_list = {"cat", "dog", "cot", "cog", "dog"};
     print_word_ladder(generate_word_ladder("cat", "dog", word_list));
     // my_assert(generate_word_ladder("cat", "dog", word_list).size() == 4);
 }
