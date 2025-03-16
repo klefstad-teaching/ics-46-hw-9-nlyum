@@ -15,33 +15,35 @@ vector<string> get_patterns(const string& word) {
     vector<string> patterns;
     int word_length = word.length();
     for (int i = 0; i < word_length; ++i) {     // iterate through characters
-        string pattern;
-        pattern += word.substr(0, i);
-        pattern += "*";
-        pattern += word.substr(i + 1);
+        string pattern = word.substr(0, i) + "*" + word.substr(i + 1);
         patterns.push_back(pattern);      // push pattern for each character change
-    }
 
-    for (int i = 0; i <= word_length; ++i) {
-        string pattern;
-        pattern += word.substr(0, i);
-        pattern += "*";
-        pattern += word.substr(i);
+        pattern = word.substr(0, i) + "*" + word.substr(i);
         patterns.push_back(pattern);      // push pattern for each character addition
-    }
-
-    for (int i = 0; i < word_length; ++i) {
-        string pattern;
-        pattern += word.substr(0, i);
-        pattern += word.substr(i + 1);
+        
+        pattern = word.substr(0, i) + word.substr(i + 1);
         patterns.push_back(pattern);      // push pattern for each character removal
     }
+    
+    string pattern = word + "*";
+    patterns.push_back(pattern);      // push pattern for character added at end
+
     return patterns;
 }
 
+int edit_distance(const string& str1, const string& str2) {
+    int str1_len = str1.length();
+    int str2_len = str2.length();
+    if (str1 == str2)
+        return 0;
+    if (str1_len == 0)
+        return str2_len;
+    if (str2_len == 0)
+        return str1_len;
+}
 
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d)  {
-
+    return edit_distance(str1, str2) <= d;
 }
 
 bool is_adjacent(const string& word1, const string& word2) {
