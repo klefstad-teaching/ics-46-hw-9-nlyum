@@ -53,7 +53,7 @@ vector<int> extract_shortest_path(const vector<int>& distances, const vector<int
     path.push_back[i];
         while (previous[i] != UNDEFINED) {
             i = previous[i];
-            path.push_back[i];
+            path.push_back(i);
         }
     reverse(path.begin(), path.end());
     return path;
