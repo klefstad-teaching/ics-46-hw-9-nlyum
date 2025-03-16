@@ -90,29 +90,31 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     for (string word : word_set)
         previous_words[word] = INF;
 
-/*
+
     map<string, vector<string>> patterns;       // maps word to patterns that fit
     map<string, set<string>> related_words;     // maps pattern to words that fit
     map<string, set<string>> neighbors;         // maps word to neighbors that are one away
     for (string word : word_set) {
-        vector<string> word_patterns = get_patterns(word)
+        vector<string> word_patterns = get_patterns(word);
         patterns[word] = word_patterns;
         for (string pattern : word_patterns) {
             related_words[pattern].insert(word);
         }
     }
+
     for (string word : word_set) {
         vector<string> word_patterns = get_patterns(word);
         for (string pattern : word_patterns) {
-            neighbors[word].insert()
+            for (string related_word : related_words[pattern]) {
+                neighbors[word].insert(related_word);
+            }
         }
 
     }
-*/
+
     
     
-    // cout << "past new phase" << endl;
-    map<string, set<string>> neighbors;
+    cout << "past new phase" << endl;
     
     while (!ladder_queue.empty()) {
         vector<string> ladder = ladder_queue.front();
@@ -121,7 +123,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
         string last_word = ladder.back();
 
-        for (string word : word_set) {
+        for (string word : neighbors[last_word]) {
             /*
             if (ladder.size() >= previous_words[word]) {
                 cout << "optimal " << word << " is " << previous_words[word];
@@ -129,8 +131,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
             }
             */
             
-            
-            if (neighbors[last_word].contains(word) || is_adjacent(last_word, word)) {
+            if (true) {
                 if (visited.count(word) == 0) {
                     visited.insert(word);
                     vector<string> new_ladder = ladder;
