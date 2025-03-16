@@ -47,7 +47,7 @@ bool is_adjacent(const string& word1, const string& word2) {
     vector<string> word1_patterns = get_patterns(word1);
     vector<string> word2_patterns = get_patterns(word2);
     for (string pattern1 : word1_patterns) {
-        for (string pattern2 : word2 patterns) {
+        for (string pattern2 : word2_patterns) {
             if (pattern1 == pattern2)
                 return true;
         }
@@ -57,28 +57,29 @@ bool is_adjacent(const string& word1, const string& word2) {
 }
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
-    word_list.insert(begin_word);
+    set<string> word_set = word_list;
+    word_set.insert(begin_word);
     map<string, vector<string>> patterns;
     map<string, vector<string>> neighbors;
     
-    for (string word : word_list) {     // create maps
+    for (string word : word_set) {     // create maps
         vector<string> word_patterns = get_patterns(word);
         patterns[word] = word_patterns;
         for (string pattern : word_patterns) {
-            neighbors[pattern] = word;
+            neighbors[pattern].push_back(word);
         }
     }
     
     vector<string> ladder;
 
     set<string> visited;    // already visited
-    visited.push(begin_word);
+    visited.insert(begin_word);
     
     queue<string> q;        // what to visit next
     q.push(begin_word);
     
     while (!q.empty()) {
-        string word = q.top();
+        string word = q.front();
         q.pop();
         ladder.push_back(word);
         
@@ -88,7 +89,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         for (string pattern : patterns[word]) {
             for (string neighbor : neighbors[pattern]) {
                 if (visited.count(neighbor) == 0) {     // haven't visited
-                    visited.push(neighbor);
+                    visited.insert(neighbor);
                     q.push(neighbor);
                 }
             }
@@ -99,8 +100,9 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
 void load_words(set<string> & word_list, const string& file_name) {
     ifstream in(file_name);
+    string word;
     while (in >> word)
-        word_list.push(word);
+        word_list.insert(word);
     in.close();
 }
 
@@ -109,7 +111,8 @@ void print_word_ladder(const vector<string>& ladder) {
         cout << word << ", ";
 }
 
-void my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
+
+#define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
 
 void verify_word_ladder() {
     set<string> word_list;
