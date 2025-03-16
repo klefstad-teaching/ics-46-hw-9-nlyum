@@ -58,6 +58,47 @@ bool is_adjacent(const string& word1, const string& word2) {
 }
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
+    // put begin_word in word set if not already in
+    set<string> word_set = word_list;
+    word_set.insert(begin_word);
+    
+    vector<string> begin_word_vector;
+    begin_word_vector.push_back(begin_word);
+    
+    if (begin_word == end_word) {
+        return begin_word_vector;
+    }
+    
+    queue<vector<string>> ladder_queue;
+    ladder_queue.push(begin_word_vector);
+
+    set<string> visited;
+    visited.insert(begin_word);
+
+    while (!ladder_queue.empty()) {
+        vector<string> ladder = ladder_queue.front();
+        ladder_queue.pop();
+
+        string last_word = ladder.back();
+
+        for (string word : word_set) {
+            if (is_adjacent(last_word, word)) {
+                if (visited.count(word) == 0) {
+                    visited.insert(word);
+                    vector<string> new_ladder = ladder;
+                    new_ladder.push_back(word);
+                    if (word == end_word)
+                        return new_ladder;
+                    ladder_queue.push(new_ladder);
+                }
+            }
+        }
+    }
+    return {};
+
+    
+    // an old solution that i spent 3 hours on but ended up scrapping :(
+    /*
     set<string> word_set = word_list;
     word_set.insert(begin_word);
     map<string, vector<string>> patterns;
@@ -100,16 +141,17 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         }
     }
     return ladder;
+    */
 }
 
 void load_words(set<string> & word_list, const string& file_name) {
     ifstream in(file_name);
     string word;
     while (in >> word) {
-        cout << "inserting " << word << ", ";
+        // cout << "inserting " << word << ", ";
         word_list.insert(word);
     }
-    cout << "done loading" << endl;
+    // cout << "done loading" << endl;
     in.close();
 }
 
@@ -123,19 +165,13 @@ void print_word_ladder(const vector<string>& ladder) {
 
 void verify_word_ladder() {
     set<string> word_list;
-    // load_words(word_list, "src/words.txt");
-    
-    
-    word_list = {"cat", "dog", "cot", "cog", "dog"};
-    my_assert(generate_word_ladder("cat", "dog", word_list).size() == 4);
+    load_words(word_list, "src/words.txt");
 
-    word_list = {"cat", "ca", "c"};
-    my_assert(generate_word_ladder("cat", "c", word_list).size() == 3);
+    print_word_ladder(generate_word_ladder("cat", "dog", word_list));
 
-    word_list = {"cat", "cats", "catss"};
-    my_assert(generate_word_ladder("cat", "catss", word_list).size() == 3);
+    // cout << generate_word_ladder("marty", "curls", word_list).size() << endl;
 
-    
+    // cout << generate_word_ladder("code", "data", word_list).size() << endl;
 }
 
 

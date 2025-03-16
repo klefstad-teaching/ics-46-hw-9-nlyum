@@ -17,7 +17,6 @@ TEST(WordLadder, ExtendString) {
   EXPECT_TRUE(generate_word_ladder("cat", "catssss", word_list).size() == 5);
 }
 
-
 TEST(WordLadder, ShrinkString) {
   set<string> word_list = {"cat", "c", "ca"};
   EXPECT_TRUE(generate_word_ladder("cat", "c", word_list).size() == 3);
