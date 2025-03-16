@@ -46,6 +46,13 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 }
 
 bool is_adjacent(const string& word1, const string& word2) {
+    int word1_len = word1.length();
+    int word2_len = word2.length();
+    if (word1_len < word2_len - 1)
+        return false;
+    if (word1_len > word2_len + 1)
+        return false;
+    
     return edit_distance_within(word1, word2, 1);
 }
 
@@ -75,10 +82,12 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         string last_word = ladder.back();
 
         for (string word : word_set) {
-            if (previous_words.count(word) != 0 && ladder.size() >= previous_words[word]) {
+            /*
+            if (previous_words.find(word) != previous_words.end() && ladder.size() >= previous_words[word]) {
                 // cout << "optimal " << word << " is " << previous_words[word];
                 continue;
             }
+            */
             
             if (is_adjacent(last_word, word)) {
                 if (visited.count(word) == 0) {
@@ -88,7 +97,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
                     if (word == end_word)
                         return new_ladder;
                     
-                    previous_words[new_ladder.back()] = new_ladder.size() - 1;
+                    previous_words[new_ladder.back()] = ladder.size();
 
                     ladder_queue.push(new_ladder);
                     
