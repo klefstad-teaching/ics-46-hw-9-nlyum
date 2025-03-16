@@ -9,9 +9,9 @@ using namespace std;
 
 struct compare_weights {
     bool operator()(const pair<int, int>& left, const pair<int, int>& right) {
-        return left.weight > right.weight;
+        return left.second > right.second;
     }
-}
+};
 
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous) {
     int numVertices = G.size();
@@ -22,7 +22,7 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
     priority_queue<pair<int, int>, vector<pair<int, int>>, compare_weights> minHeap;
     minHeap.push({source, 0});
     while (!minHeap.empty()) {
-        int u = minHeap.top().first();
+        int u = minHeap.top().first;
         minHeap.pop();
         if (visited[u])     // skip if we've already visited it
             continue;
