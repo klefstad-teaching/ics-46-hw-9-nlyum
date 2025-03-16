@@ -93,29 +93,32 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         string last_word = ladder.back();
 
         for (string word : word_set) {
+            if (previous_words.count(word) != 0 && ladder.size() >= previous_words[word]) {
+                // cout << "optimal " << word << " is " << previous_words[word];
+                continue;
+            }
+            
             if (is_adjacent(last_word, word)) {
                 if (visited.count(word) == 0) {
                     visited.insert(word);
                     vector<string> new_ladder = ladder;
                     new_ladder.push_back(word);
-
-
-
-
                     if (word == end_word)
                         return new_ladder;
+                    
+                    previous_words[new_ladder.back()] = new_ladder.size() - 1;
+
                     ladder_queue.push(new_ladder);
-                    cout << "pushed new ladder ";
-                    print_word_ladder(new_ladder);
-                    cout << ", ";
+                    
+                    
+                    // cout << "pushed new ladder ";
+                    // print_word_ladder(new_ladder);
+                    // cout << ", ";
                 }
             }
         }
     }
     return {};
-
-    
-    
 }
 
 void load_words(set<string> & word_list, const string& file_name) {
@@ -141,7 +144,7 @@ void verify_word_ladder() {
     set<string> word_list;
     load_words(word_list, "src/words.txt");
 
-    print_word_ladder(generate_word_ladder("cat", "Nan", word_list));
+    print_word_ladder(generate_word_ladder("cat", "dog", word_list));
 
     // cout << generate_word_ladder("marty", "curls", word_list).size() << endl;
 
