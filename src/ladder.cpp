@@ -12,6 +12,18 @@ void error(string word1, string word2, string msg) {
     cout << word1 << " " << word2 << " ERROR: " << msg << endl;
 }
 
+vector<string> get_patterns(const string& word) {
+    vector<string> patterns;
+    int word_length = word.length();
+    for (int i = 0; i < word_length; ++i) {     // iterate through characters
+        patterns.push_back(word.substr(0, i) + "*" + word.substr(i + 1));      // push pattern for each character change
+        patterns.push_back(word.substr(0, i) + "*" + word.substr(i));      // push pattern for each character addition
+        patterns.push_back(word.substr(0, i) + word.substr(i + 1));      // push pattern for each character removal
+    }
+    patterns.push_back(word + "*");
+    return patterns;
+}
+
 int edit_distance(const string& str1, const string& str2) {
     int str1_len = str1.length();
     int str2_len = str2.length();
@@ -78,8 +90,29 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     for (string word : word_set)
         previous_words[word] = INF;
 
+/*
+    map<string, vector<string>> patterns;       // maps word to patterns that fit
+    map<string, set<string>> related_words;     // maps pattern to words that fit
+    map<string, set<string>> neighbors;         // maps word to neighbors that are one away
+    for (string word : word_set) {
+        vector<string> word_patterns = get_patterns(word)
+        patterns[word] = word_patterns;
+        for (string pattern : word_patterns) {
+            related_words[pattern].insert(word);
+        }
+    }
+    for (string word : word_set) {
+        vector<string> word_patterns = get_patterns(word);
+        for (string pattern : word_patterns) {
+            neighbors[word].insert()
+        }
+
+    }
+*/
     
     
+    // cout << "past new phase" << endl;
+    map<string, set<string>> neighbors;
     
     while (!ladder_queue.empty()) {
         vector<string> ladder = ladder_queue.front();
@@ -97,7 +130,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
             */
             
             
-            if (is_adjacent(last_word, word)) {
+            if (neighbors[last_word].contains(word) || is_adjacent(last_word, word)) {
                 if (visited.count(word) == 0) {
                     visited.insert(word);
                     vector<string> new_ladder = ladder;
@@ -140,7 +173,7 @@ void print_word_ladder(const vector<string>& ladder) {
     }
     
     for (string word: ladder)
-        cout << word << ", ";
+        cout << word << " ";
     cout << endl;
 }
 
