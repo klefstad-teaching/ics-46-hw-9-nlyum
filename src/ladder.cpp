@@ -85,12 +85,11 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         string last_word = ladder.back();
 
         for (string word : word_set) {
-            
+            /*
             if (ladder.size() >= previous_words[word]) {
                 continue;
             }
-            
-            
+            */
             if (is_adjacent(last_word, word)) {
                 if (visited.count(word) == 0) {
                     visited.insert(word);
@@ -100,8 +99,6 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
                         return new_ladder;
                     
                     previous_words[new_ladder.back()] = ladder.size();
-                    if (ladder.size() > ladder_size)
-                        word_set.erase(new_ladder.back());
 
                     ladder_queue.push(new_ladder);
                     
