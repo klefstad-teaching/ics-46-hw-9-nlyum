@@ -118,18 +118,21 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
         for (string pattern : patterns[last_word]) {
             for (string word : neighbors[pattern]) {
-                if (visited.count(word) == 0) {
-                    visited.insert(word);
-                    vector<string> new_ladder = ladder;
-                    new_ladder.push_back(word);
-                    if (word == end_word)
-                        return new_ladder;
-                    
-                    previous_words[new_ladder.back()] = ladder.size();
-                    if (ladder.size() > ladder_size)
-                        word_set.erase(new_ladder.back());
+                if (is_adjacent(last_word, word)) {
+                    if (visited.count(word) == 0) {
+                        visited.insert(word);
+                        vector<string> new_ladder = ladder;
+                        new_ladder.push_back(word);
+                        if (word == end_word)
+                            return new_ladder;
+                        
+                        previous_words[new_ladder.back()] = ladder.size();
+                        if (ladder.size() > ladder_size)
+                            word_set.erase(new_ladder.back());
 
-                    ladder_queue.push(new_ladder);
+                        ladder_queue.push(new_ladder);
+                        
+                    }
                 }
             }
         }
