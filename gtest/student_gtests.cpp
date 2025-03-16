@@ -7,6 +7,11 @@ TEST(Example, ShouldPass) {
   EXPECT_TRUE(true);
 }
 
+TEST(EditDistance, CatToDog) {
+  EXPECT_TRUE(edit_distance_within("cat", "dog", 3));
+  EXPECT_TRUE(!edit_distance_within("cat", "dog", 2));
+}
+
 TEST(WordLadder, CatToDog) {
   set<string> word_list = {"cat", "dog", "cot", "cog", "dog"};
   EXPECT_TRUE(generate_word_ladder("cat", "dog", word_list).size() == 4);
