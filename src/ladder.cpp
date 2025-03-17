@@ -88,15 +88,12 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
     set<string> visited;
     visited.insert(begin_word);
-    map<string, int> previous_words;
 
     /* 
     map<string, vector<string>> patterns; // maps a word to all its patterns
     map<string, vector<string>> neighbors; // maps a pattern to all its fitting words
 
     for (string word : word_set) {
-        previous_words[word] = INF;
-
         vector<string> word_patterns;
         int word_length = word.length();
         for (int i = 0; i < word_length; ++i) {     // iterate through characters
@@ -128,10 +125,6 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
                     if (word == end_word)
                         return new_ladder;
                     
-                    previous_words[new_ladder.back()] = ladder.size();
-                    if (ladder.size() > ladder_size)
-                        word_set.erase(new_ladder.back());
-
                     ladder_queue.push(new_ladder);
                     
                 }
@@ -168,8 +161,7 @@ void verify_word_ladder() {
     set<string> word_list;
     load_words(word_list, "src/words.txt");
 
-    print_word_ladder(generate_word_ladder("awake", "sleep", word_list));
+    print_word_ladder(generate_word_ladder("cat", "dog", word_list));
 }
-
 
 
