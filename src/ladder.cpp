@@ -59,6 +59,9 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 }
 
 bool is_adjacent(const string& word1, const string& word2) {
+    if (word1 == word2) {
+        return true;
+    }
     int word1_len = word1.length();
     int word2_len = word2.length();
     if (word1_len < word2_len - 1)
@@ -87,6 +90,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     visited.insert(begin_word);
     map<string, int> previous_words;
 
+    /* 
     map<string, vector<string>> patterns; // maps a word to all its patterns
     map<string, vector<string>> neighbors; // maps a pattern to all its fitting words
 
@@ -107,6 +111,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
             neighbors[pattern].push_back(word);
         }
     }
+    */
 
     
     while (!ladder_queue.empty()) {
@@ -114,25 +119,21 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         ladder_queue.pop();
         int ladder_size = ladder_queue.size();
         string last_word = ladder.back();
+        for (string word : word_set) {
+            if (is_adjacent(last_word, word)) {
+                if (visited.count(word) == 0) {
+                    visited.insert(word);
+                    vector<string> new_ladder = ladder;
+                    new_ladder.push_back(word);
+                    if (word == end_word)
+                        return new_ladder;
+                    
+                    previous_words[new_ladder.back()] = ladder.size();
+                    if (ladder.size() > ladder_size)
+                        word_set.erase(new_ladder.back());
 
-
-        for (string pattern : patterns[last_word]) {
-            for (string word : neighbors[pattern]) {
-                if (is_adjacent(last_word, word)) {
-                    if (visited.count(word) == 0) {
-                        visited.insert(word);
-                        vector<string> new_ladder = ladder;
-                        new_ladder.push_back(word);
-                        if (word == end_word)
-                            return new_ladder;
-                        
-                        previous_words[new_ladder.back()] = ladder.size();
-                        if (ladder.size() > ladder_size)
-                            word_set.erase(new_ladder.back());
-
-                        ladder_queue.push(new_ladder);
-                        
-                    }
+                    ladder_queue.push(new_ladder);
+                    
                 }
             }
         }
@@ -167,7 +168,7 @@ void verify_word_ladder() {
     set<string> word_list;
     load_words(word_list, "src/words.txt");
 
-    print_word_ladder(generate_word_ladder("cat", "dog", word_list));
+    print_word_ladder(generate_word_ladder("awake", "sleep", word_list));
 }
 
 
